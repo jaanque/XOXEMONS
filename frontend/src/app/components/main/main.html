@@ -1,0 +1,40 @@
+<video #bgVideo autoplay loop muted playsinline class="fons-animat">
+  <source src="/main.mp4" type="video/mp4">
+</video>
+
+<div class="main-wrapper">
+  
+  <div class="retro-box navbar">
+    <h2 class="main-title">🎮 Món Xuxemons</h2>
+    <div>
+      <button routerLink="/profile" class="pixel-button btn-blue">
+        El Meu Perfil
+      </button>
+      <button (click)="onLogout()" class="pixel-button btn-red">
+        Tancar Sessió
+      </button>
+    </div>
+  </div>
+
+  <div class="retro-box" style="text-align: center;">
+    
+    <div *ngIf="userData; else loading">
+      <h1>Benvingut, {{ userData.name }}!</h1>
+      <p>ID DE JUGADOR: <strong>{{ userData.custom_id }}</strong></p>
+      
+      <div class="role-badge">
+        {{ userData.role === 'robot' ? '🤖 Admin' : '🕹️ Jugador' }}
+      </div>
+
+      <div class="adventure-box">
+        <h3>🗺️ L'aventura comença!</h3>
+        <p>Panell per gestionar els teus xuxemons i buscar batalles.</p>
+      </div>
+    </div>
+
+    <ng-template #loading>
+      <h3 class="loading-text">Carregant dades... ⏳</h3>
+    </ng-template>
+
+  </div>
+</div>
