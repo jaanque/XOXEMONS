@@ -18,23 +18,23 @@
 
   <div class="retro-box" style="text-align: center;">
     
-    <div *ngIf="userData; else loading">
-      <h1>Benvingut, {{ userData.name }}!</h1>
-      <p>ID DE JUGADOR: <strong>{{ userData.custom_id }}</strong></p>
-      
-      <div class="role-badge">
-        {{ userData.role === 'robot' ? '🤖 Admin' : '🕹️ Jugador' }}
-      </div>
+    @if (userData) {
+      <div>
+        <h1>Benvingut, {{ userData.name }}!</h1>
+        <p>ID DE JUGADOR: <strong>{{ userData.custom_id }}</strong></p>
+        
+        <div class="role-badge">
+          {{ userData.role === 'robot' ? '🤖 Admin' : '🕹️ Jugador' }}
+        </div>
 
-      <div class="adventure-box">
-        <h3>🗺️ L'aventura comença!</h3>
-        <p>Panell per gestionar els teus xuxemons i buscar batalles.</p>
+        <div class="adventure-box">
+          <h3>🗺️ L'aventura comença!</h3>
+          <p>Panell per gestionar els teus xuxemons i buscar batalles.</p>
+        </div>
       </div>
-    </div>
-
-    <ng-template #loading>
+    } @else {
       <h3 class="loading-text">Carregant dades... ⏳</h3>
-    </ng-template>
+    }
 
   </div>
 </div>
