@@ -1,3 +1,5 @@
+// Mante la sessió del usuari oberta fins que la tanque
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';

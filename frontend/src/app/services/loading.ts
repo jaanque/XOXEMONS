@@ -1,3 +1,5 @@
+// Pantalla de carrega
+
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -9,7 +11,7 @@ export class LoadingService {
   private loadingSubject = new BehaviorSubject<boolean>(false);
   // Controla el text que es mostra (per defecte 'CARREGANT...')
   private messageSubject = new BehaviorSubject<string>('CARREGANT...');
-  
+
   loading$ = this.loadingSubject.asObservable();
   message$ = this.messageSubject.asObservable();
 

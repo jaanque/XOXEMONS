@@ -17,6 +17,6 @@ export const routes: Routes = [
   { path: 'profile', component: Profile, canActivate: [authGuard] },
   { path: 'xuxedex', component: Xuxedex, canActivate: [authGuard] },
   { path: 'inventory', component: Inventory, canActivate: [authGuard] },
-  { path: 'admin', component: Admin, canActivate: [authGuard, adminGuard] }, // Faltarà l'AdminGuard específic
+  { path: 'admin', component: Admin, canActivate: [authGuard, adminGuard] },
   { path: '**', redirectTo: '/login' }
 ];
