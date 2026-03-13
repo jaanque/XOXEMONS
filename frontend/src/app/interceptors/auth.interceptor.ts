@@ -1,3 +1,5 @@
+// Afegim el token a les peticions al backend
+
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth';
