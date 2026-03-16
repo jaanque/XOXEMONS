@@ -11,12 +11,13 @@
     👤 Perfil
   </button>
 </div>
+
 <div class="inventory-container">
-  <h2 style="text-align: center;">🎒 La Meva Motxilla</h2>
 
   <div class="inventory-grid" role="grid">
+    
     @for (slot of slots; track $index) {
-      <div class="slot" role="gridcell">
+      <div class="slot-wrapper" role="gridcell">
         
         @if (slot) {
           <div class="item-card" [ngClass]="{'stackable': slot.is_stackable, 'non-stackable': !slot.is_stackable}">
@@ -28,11 +29,13 @@
             }
           </div>
         } 
+        
         @else {
           <div class="empty-slot"></div>
         }
 
       </div>
     }
+    
   </div>
 </div>

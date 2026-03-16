@@ -14,7 +14,7 @@ class AdminController extends Controller
         return response()->json(User::select('id', 'name', 'custom_id')->get());
     }
 
-    // 2. Lògica per donar l'objecte al jugador
+    // 2. Lògica per donar l'objecte al jugador (AMB FRE DE 20 ESPAIS)
     public function giveItem(Request $request) {
         $request->validate([
             'user_id' => 'required|exists:users,id',
@@ -31,6 +31,24 @@ class AdminController extends Controller
             ['is_stackable' => $request->item_type === 'xuxe'] // Les xuxes s'apilen, les vacunes no
         );
 
+        $totalSlotsUsed = 0;
+        foreach ($user->items as $userItem) {
+            if ($userItem->is_stackable) {
+                // Si és apilable (xuxe), dividim per 5 i arrodonim cap amunt
+                $totalSlotsUsed += ceil($userItem->pivot->quantity / 5);
+            } else {
+                // Si no és apilable (vacuna), cadascuna ocupa 1 espai
+                $totalSlotsUsed += $userItem->pivot->quantity;
+            }
+        }
+
+        // Si l'inventari ja està ple (20 espais o més), bloquegem i no donem res
+        if ($totalSlotsUsed >= 20) {
+            return response()->json([
+                'error' => 'La motxilla daquest jugador està plena (20/20 espais). Els objectes han estat descartats.'
+            ], 400); 
+        }
+        
         // Comprovem si l'usuari ja té aquest objecte a la seva motxilla
         $existingItem = $user->items()->where('item_id', $item->id)->first();
 
@@ -47,6 +65,7 @@ class AdminController extends Controller
         return response()->json(['message' => 'Ítem afegit correctament a la motxilla!']);
     }
     
+    // 3. Lògica per donar el Xuxemon Aleatori
     public function giveRandomXuxemon(Request $request) {
         $request->validate([
             'user_id' => 'required|exists:users,id'

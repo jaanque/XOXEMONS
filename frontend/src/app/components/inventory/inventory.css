@@ -1,81 +1,133 @@
+/* --- CONTENIDOR PRINCIPAL --- */
 .inventory-container {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #f5f5f5;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  max-width: 650px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: #f4ecd8; /* Color pergamí clar */
+  border: 6px solid #5d4037; /* Vora marró fosca estil retro */
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 
+.inventory-container h2 {
+  text-align: center;
+  color: #5d4037;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 1.8rem;
+  text-shadow: 1px 1px 0px white;
+}
+
+/* --- LA GRAELLA EXACTA 4x5 --- */
 .inventory-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 Columnes */
-  grid-template-rows: repeat(5, 1fr);    /* 5 Files */
-  gap: 10px;
-  background-color: #8d6e63; /* Color de cuir/motxilla */
-  padding: 15px;
-  border-radius: 8px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 110px); /* Alçada fixa de 110px per fer quadrats clars */
+  gap: 15px;
+  background-color: #8d6e63; /* Fons fosc per la motxilla */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: inset 0 6px 15px rgba(0,0,0,0.5); /* Ombra interior perquè sembli fonda */
 }
 
-.slot {
-  aspect-ratio: 1; /* Manté els espais quadrats */
-  background-color: rgba(255, 255, 255, 0.2);
-  border: 2px dashed rgba(255, 255, 255, 0.5);
-  border-radius: 6px;
-  position: relative;
+/* El contenidor genèric de cada espai */
+.slot, .slot-wrapper {
+  width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
+/* --- 1. DISSENY DEL FORAT BUIT --- */
 .empty-slot {
   width: 100%;
   height: 100%;
-}
-
-.item-card {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  border-radius: 4px;
-  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 3px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
   box-sizing: border-box;
 }
 
+/* --- 2. DISSENY DEL FORAT PLE (LA CARTA) --- */
+.item-card {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  border: 3px solid #333;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 8px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+/* Efecte al passar el ratolí per sobre */
+.item-card:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.4);
+  z-index: 10;
+}
+
+/* Colors segons si són Xuxes (Apilables) o Vacunes */
 .item-card.stackable {
-  border: 2px solid #4CAF50; /* Verd per xuxes */
+  border-color: #fbc02d; /* Vora Daurada */
+  background: linear-gradient(135deg, #fffde7 0%, #fff9c4 100%);
 }
 
 .item-card.non-stackable {
-  border: 2px solid #F44336; /* Vermell per vacunes */
+  border-color: #29b6f6; /* Vora Blava */
+  background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%);
 }
 
+/* --- IMATGE DE L'ÍTEM --- */
 .item-image {
-  max-width: 70%;
-  max-height: 50%;
+  width: 55px; /* Mida controlada */
+  height: 55px;
   object-fit: contain;
+  margin-bottom: 6px;
+  filter: drop-shadow(0 4px 3px rgba(0,0,0,0.2)); /* Dóna un toc 3D a la imatge */
 }
 
+/* --- EL NOM DE L'ÍTEM --- */
 .item-name {
-  font-size: 0.7em;
+  font-family: Arial, sans-serif; /* Forcem una font neta per evitar estils estranys */
+  font-size: 11px !important; /* Mida súper petita obligatòria */
+  font-weight: 800 !important;
   text-align: center;
-  margin-top: 5px;
-  font-weight: bold;
+  color: #3e2723;
+  line-height: 1.1;
+  width: 100%;
+  /* Aquestes 3 línies eviten que el text llarg surti de la carta (posa "...") */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  padding: 0;
 }
 
+/* --- LA BOLETA DE QUANTITAT (x5) --- */
 .quantity-badge {
   position: absolute;
-  bottom: -5px;
-  right: -5px;
-  background-color: #ff9800;
-  color: white;
-  padding: 2px 6px;
-  border-radius: 10px;
-  font-size: 0.8em;
-  font-weight: bold;
-  border: 1px solid white;
+  top: -8px; /* Forcem que surti adalt a la dreta */
+  right: -8px; /* Forcem que surti adalt a la dreta */
+  background-color: #d32f2f !important; /* Vermell fort */
+  color: #ffffff !important;
+  font-family: Arial, sans-serif;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  padding: 4px 8px !important;
+  border-radius: 20px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.3);
+  z-index: 5;
+  display: inline-block;
 }
