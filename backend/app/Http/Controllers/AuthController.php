@@ -60,6 +60,8 @@ class AuthController extends Controller
         // El document diu que el login és amb el ID i Contrasenya
         $credentials = $request->only('custom_id', 'password');
 
+        // Verificar que el usuari existeix o les credencials son incorrectes
+        $user = User::where('custom_id', $credentials['custom_id'])->first();
         if (! $token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Credencials invàlides'], 401);
         }
