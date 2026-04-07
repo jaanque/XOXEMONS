@@ -39,30 +39,38 @@
 
   <div class="xuxedex-grid">
     
-    @for (xuxe of filteredXuxemons; track xuxe.id) {
-      <article class="xuxe-card">
-        <img [src]="xuxe.image || '/assets/default-xuxe.png'" [alt]="xuxe.name" class="xuxe-img">
+  @for (xuxe of filteredXuxemons; track xuxe.id) {
+    <article class="xuxe-card">
+      <img [src]="xuxe.image || '/assets/default-xuxe.png'" [alt]="xuxe.name" class="xuxe-img">
+      
+      <h2 class="xuxe-name">{{ xuxe.name }}</h2>
+      
+      <div class="badges-container">
+        <span class="badge type-badge" [ngClass]="xuxe.type.toLowerCase()">
+          {{ xuxe.type }}
+        </span>
+        <span class="badge size-badge">{{ xuxe.size }}</span>
         
-        <h2 class="xuxe-name">{{ xuxe.name }}</h2>
-        
-        <div class="badges-container">
-          <span class="badge type-badge" [ngClass]="xuxe.type.toLowerCase()">
-            {{ xuxe.type }}
-          </span>
-          <span class="badge size-badge">{{ xuxe.size }}</span>
-        </div>
-        <button class="pixel-button btn-green mt-2" (click)="openFeedModal(xuxe)">
-          🍬 Donar Menjar
-        </button>
-      </article>
-    } 
-    @empty {
-      <div class="empty-state">
-        <h3>No s'ha trobat cap Xuxemon! 🕵️‍♂️</h3>
-        <p>Intenta canviar els filtres o aconsegueix-ne de nous.</p>
+        @if (xuxe.pivot.disease) {
+          <span class="badge disease-badge" aria-live="polite">🦠 {{ xuxe.pivot.disease }}</span>
+        }
       </div>
-    }
-    
+      
+      <button class="pixel-button btn-green mt-2" 
+              [disabled]="xuxe.pivot.disease === 'Atracón'"
+              (click)="openFeedModal(xuxe)">
+        @if (xuxe.pivot.disease === 'Atracón') { 🤢 Empatxat! } 
+        @else { 🍬 Donar Menjar }
+      </button>
+    </article>
+  } 
+  @empty {
+    <div class="empty-state">
+      <h3>No s'ha trobat cap Xuxemon! 🕵️‍♂️</h3>
+      <p>Intenta canviar els filtres o aconsegueix-ne de nous.</p>
+    </div>
+  }
+  
   </div>
 
   @if (isModalOpen) {
@@ -74,6 +82,9 @@
       <p>Mida actual: <strong>{{ selectedXuxemon?.size }}</strong></p>
       <p>Xuxes menjades: <strong>{{ selectedXuxemon?.pivot?.food_eaten || 0 }}</strong></p>
       
+      @if (selectedXuxemon?.pivot?.disease === 'Bajón de azúcar') {
+        <p class="preview-text" style="color: red;">⚠️ Té un Bajón de azúcar! Necessita 2 xuxes extres per evolucionar.</p>
+      }
       @if (selectedXuxemon?.size !== 'Gran') {
         <p class="preview-text">Falten <strong>{{ getXuxesToEvolve() }}</strong> xuxes per evolucionar! 🌟</p>
       }
