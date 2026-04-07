@@ -31,7 +31,7 @@
       <select [(ngModel)]="filterSize" (change)="applyFilters()">
         <option value="">📏 Totes les mides</option>
         <option value="Petit">Petit</option>
-        <option value="Mitjà">Mitjà</option>
+        <option value="Mitja">Mitjà</option>
         <option value="Gran">Gran</option>
       </select>
     </div>
@@ -51,6 +51,9 @@
           </span>
           <span class="badge size-badge">{{ xuxe.size }}</span>
         </div>
+        <button class="pixel-button btn-green mt-2" (click)="openFeedModal(xuxe)">
+          🍬 Donar Menjar
+        </button>
       </article>
     } 
     @empty {
@@ -61,4 +64,40 @@
     }
     
   </div>
+
+  @if (isModalOpen) {
+  <div class="modal-backdrop" (click)="closeModal()"></div>
+  <div class="custom-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content" [ngClass]="{'evolve-animation': evolutionPreview}">
+      <h2 id="modal-title">Alimentar a {{ selectedXuxemon?.name }}</h2>
+      
+      <p>Mida actual: <strong>{{ selectedXuxemon?.size }}</strong></p>
+      <p>Xuxes menjades: <strong>{{ selectedXuxemon?.pivot?.food_eaten || 0 }}</strong></p>
+      
+      @if (selectedXuxemon?.size !== 'Gran') {
+        <p class="preview-text">Falten <strong>{{ getXuxesToEvolve() }}</strong> xuxes per evolucionar! 🌟</p>
+      }
+
+      <div class="form-group mt-3">
+        <label for="xuxeSelect">Tria una Xuxe de la teva motxilla:</label>
+        <select id="xuxeSelect" [(ngModel)]="selectedXuxeId" class="pixel-input">
+          <option [ngValue]="null" disabled>-- Selecciona una Xuxe --</option>
+          @for (item of inventoryXuxes; track item.id) {
+            <option [ngValue]="item.id">{{ item.name }} (Tens: {{ item.pivot.quantity }})</option>
+          }
+          @empty {
+            <option disabled>No tens xuxes a l'inventari!</option>
+          }
+        </select>
+      </div>
+
+      <div class="modal-actions mt-4">
+        <button class="pixel-button btn-red" (click)="closeModal()">Cancel·lar</button>
+        <button class="pixel-button btn-green" [disabled]="!selectedXuxeId || evolutionPreview" (click)="feed()">
+          @if (evolutionPreview) { ✨ Evolucionant... } @else { 🍬 Alimentar }
+        </button>
+      </div>
+    </div>
+  </div>
+}
 </div>

@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('type', ['Aigua', 'Terra', 'Aire']);
-            $table->enum('size', ['Petit', 'Mitjà', 'Gran']);
+            $table->enum('size', ['Petit', 'Mitja', 'Gran']);
             $table->string('image')->nullable();
             $table->timestamps();
         });
