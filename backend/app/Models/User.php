@@ -43,8 +43,11 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
     
-    public function xuxemons() {
-    return $this->belongsToMany(Xuxemon::class, 'user_xuxemons');
+    public function xuxemons()
+    {
+        return $this->belongsToMany(Xuxemon::class, 'user_xuxemons')
+                    ->withPivot('id', 'food_eaten', 'disease') // necessari per accedir a aquests camps des del pivot
+                    ->withTimestamps();
     }
 
     public function items() {
