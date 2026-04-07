@@ -4,13 +4,14 @@
   </button>
   
   <h2 class="page-title">
-    🎒 La Meva Motxilla 
+    📖 La Meva Xuxedex
   </h2>
   
   <button routerLink="/profile" class="pixel-button btn-blue">
     👤 Perfil
   </button>
 </div>
+
 <div class="xuxedex-wrapper">
   <h2 class="title">📖 La Meva Xuxedex</h2>
 
@@ -39,10 +40,10 @@
   <div class="xuxedex-grid">
     
     @for (xuxe of filteredXuxemons; track xuxe.id) {
-      <div class="xuxe-card">
+      <article class="xuxe-card">
         <img [src]="xuxe.image || '/assets/default-xuxe.png'" [alt]="xuxe.name" class="xuxe-img">
         
-        <h3 class="xuxe-name">{{ xuxe.name }}</h3>
+        <h2 class="xuxe-name">{{ xuxe.name }}</h2>
         
         <div class="badges-container">
           <span class="badge type-badge" [ngClass]="xuxe.type.toLowerCase()">
@@ -50,7 +51,7 @@
           </span>
           <span class="badge size-badge">{{ xuxe.size }}</span>
         </div>
-      </div>
+      </article>
     } 
     @empty {
       <div class="empty-state">
