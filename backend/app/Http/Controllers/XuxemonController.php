@@ -51,14 +51,14 @@ class XuxemonController extends Controller {
         if ($currentXuxemon->size === 'Petit' && $userXuxemon->food_eaten >= 3) {
             // Busquem l'evolució (suposem que és la ID següent)
             $nextXuxemon = Xuxemon::find($currentXuxemon->id + 1); 
-            if ($nextXuxemon && $nextXuxemon->size === 'Mitjà') {
+            if ($nextXuxemon && $nextXuxemon->size === 'Mitja') {
                 $userXuxemon->xuxemon_id = $nextXuxemon->id;
                 $userXuxemon->food_eaten = 0; // Reiniciem el comptador
                 $evolved = true;
             }
         }
         // De Mitjà a Gran (Requereix 5 xuxes)
-        elseif ($currentXuxemon->size === 'Mitjà' && $userXuxemon->food_eaten >= 5) {
+        elseif ($currentXuxemon->size === 'Mitja' && $userXuxemon->food_eaten >= 5) {
              $nextXuxemon = Xuxemon::find($currentXuxemon->id + 1);
              if ($nextXuxemon && $nextXuxemon->size === 'Gran') {
                  $userXuxemon->xuxemon_id = $nextXuxemon->id;
