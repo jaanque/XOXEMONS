@@ -151,6 +151,26 @@
   animation: scale-up-shake 1.5s ease-in-out forwards;
 }
 
+/* --- BADGE DE MALALTIA --- */
+.disease-badge {
+  background-color: #dc3545;
+  color: white;
+  border: 2px solid #8b0000;
+  animation: pulse 2s infinite; /* Avís visual respectant l'accessibilitat dinàmica */
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); background-color: #ff4d4d; }
+  100% { transform: scale(1); }
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(100%);
+}
+
 @keyframes scale-up-shake {
   0% { transform: scale(1); filter: brightness(1); }
   25% { transform: scale(1.1) rotate(5deg); filter: brightness(1.5); }

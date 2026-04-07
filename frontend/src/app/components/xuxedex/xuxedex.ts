@@ -80,12 +80,23 @@ export class Xuxedex implements OnInit {
   }
 
   // Càlcul de la preview d'evolució (Nivell 3)
+  // Càlcul de la preview d'evolució (Nivell 3)
   getXuxesToEvolve(): number {
     if (!this.selectedXuxemon) return 0;
+    
     const food = this.selectedXuxemon.pivot.food_eaten || 0;
-    if (this.selectedXuxemon.size === 'Petit') return Math.max(0, 3 - food);
-    if (this.selectedXuxemon.size === 'Mitja') return Math.max(0, 5 - food);
-    return 0; // Els grans ja no evolucionen
+    let required = 0;
+    
+    if (this.selectedXuxemon.size === 'Petit') required = 3;
+    if (this.selectedXuxemon.size === 'Mitja') required = 5;
+
+    // Si té "Bajón de azúcar", requereix +2 xuxes 
+    if (this.selectedXuxemon.pivot.disease === 'Bajón de azúcar') {
+      required += 2;
+    }
+
+    if (required === 0) return 0; // Els grans ja no evolucionen
+    return Math.max(0, required - food);
   }
 
   feed() {
@@ -102,8 +113,12 @@ export class Xuxedex implements OnInit {
           }, 1500); // Tanquem el modal després de l'animació
         } else {
           this.closeModal();
+          // Si no ha evolucionat, comprovem si ha agafat una malaltia al menjar
+          if (response.disease) {
+            alert('🦠 Oh no! El teu Xuxemon ha contret una malaltia: ' + response.disease);
+          }
         }
-        // Actualitzem l'inventari en background perquè es restin les xuxes visualment
+        // Actualitzem l'inventari i la xuxedex per veure els canvis visuals
         this.inventoryService.loadInventory().subscribe();
       },
       error: (err) => {
