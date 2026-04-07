@@ -47,10 +47,10 @@ export class Xuxedex implements OnInit {
       this.applyFilters(); // Apliquem els filtres inicials (mostra tot)
     });
 
-    // 3. Ens subscrivim al BehaviorSubject de l'Inventari (LA SOLUCIÓ AL TEU PROBLEMA)
-    // Filtrem perquè només ens guardi els items que són tipus 'xuxe' i que en tinguis més de 0.
+    // 3. Ens subscrivim a l'Inventari i separem xuxes i vacunes
     this.inventoryService.inventory$.subscribe(items => {
       this.inventoryXuxes = items.filter(item => item.type === 'xuxe' && item.pivot.quantity > 0);
+      this.inventoryVaccines = items.filter(item => item.type === 'vacuna' && item.pivot.quantity > 0); // <-- NOU
     });
   }
 
@@ -120,6 +120,37 @@ export class Xuxedex implements OnInit {
         }
         // Actualitzem l'inventari i la xuxedex per veure els canvis visuals
         this.inventoryService.loadInventory().subscribe();
+      },
+      error: (err) => {
+        alert('Error: ' + err.error.message);
+      }
+    });
+  }
+
+  // --- VARIABLES I FUNCIONS DEL MODAL DE VACUNES ---
+  inventoryVaccines: any[] = [];
+  isVaccinateModalOpen: boolean = false;
+  selectedVaccineId: number | null = null;
+
+  openVaccinateModal(xuxemon: any) {
+    this.selectedXuxemon = xuxemon;
+    this.selectedVaccineId = null;
+    this.isVaccinateModalOpen = true;
+  }
+
+  closeVaccinateModal() {
+    this.isVaccinateModalOpen = false;
+    this.selectedXuxemon = null;
+  }
+
+  vaccinate() {
+    if (!this.selectedXuxemon || !this.selectedVaccineId) return;
+
+    this.xuxemonService.vaccinateXuxemon(this.selectedXuxemon.pivot.id, this.selectedVaccineId).subscribe({
+      next: (response) => {
+        alert('✨ ' + response.message);
+        this.closeVaccinateModal();
+        this.inventoryService.loadInventory().subscribe(); // Actualitzem la motxilla
       },
       error: (err) => {
         alert('Error: ' + err.error.message);

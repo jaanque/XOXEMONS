@@ -28,4 +28,15 @@ export class XuxemonService {
       })
     );
   }
+
+  vaccinateXuxemon(pivotId: number, itemId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/xuxemons/${pivotId}/vaccinate`, { item_id: itemId }).pipe(
+      tap(() => {
+        // Recarreguem la xuxedex per veure com desapareix la malaltia
+        this.loadXuxedex().subscribe();
+      })
+    );
+  }
+
+  
 }
