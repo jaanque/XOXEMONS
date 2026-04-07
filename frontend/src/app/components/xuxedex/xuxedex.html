@@ -62,6 +62,12 @@
         @if (xuxe.pivot.disease === 'Atracón') { 🤢 Empatxat! } 
         @else { 🍬 Donar Menjar }
       </button>
+
+      @if (xuxe.pivot.disease) {
+        <button class="pixel-button btn-blue mt-2" (click)="openVaccinateModal(xuxe)">
+          💉 Curar
+        </button>
+      }
     </article>
   } 
   @empty {
@@ -74,41 +80,72 @@
   </div>
 
   @if (isModalOpen) {
-  <div class="modal-backdrop" (click)="closeModal()"></div>
-  <div class="custom-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="modal-content" [ngClass]="{'evolve-animation': evolutionPreview}">
-      <h2 id="modal-title">Alimentar a {{ selectedXuxemon?.name }}</h2>
-      
-      <p>Mida actual: <strong>{{ selectedXuxemon?.size }}</strong></p>
-      <p>Xuxes menjades: <strong>{{ selectedXuxemon?.pivot?.food_eaten || 0 }}</strong></p>
-      
-      @if (selectedXuxemon?.pivot?.disease === 'Bajón de azúcar') {
-        <p class="preview-text" style="color: red;">⚠️ Té un Bajón de azúcar! Necessita 2 xuxes extres per evolucionar.</p>
-      }
-      @if (selectedXuxemon?.size !== 'Gran') {
-        <p class="preview-text">Falten <strong>{{ getXuxesToEvolve() }}</strong> xuxes per evolucionar! 🌟</p>
-      }
+    <div class="modal-backdrop" (click)="closeModal()"></div>
+    <div class="custom-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-content" [ngClass]="{'evolve-animation': evolutionPreview}">
+        <h2 id="modal-title">Alimentar a {{ selectedXuxemon?.name }}</h2>
+        
+        <p>Mida actual: <strong>{{ selectedXuxemon?.size }}</strong></p>
+        <p>Xuxes menjades: <strong>{{ selectedXuxemon?.pivot?.food_eaten || 0 }}</strong></p>
+        
+        @if (selectedXuxemon?.pivot?.disease === 'Bajón de azúcar') {
+          <p class="preview-text" style="color: red;">⚠️ Té un Bajón de azúcar! Necessita 2 xuxes extres per evolucionar.</p>
+        }
+        @if (selectedXuxemon?.size !== 'Gran') {
+          <p class="preview-text">Falten <strong>{{ getXuxesToEvolve() }}</strong> xuxes per evolucionar! 🌟</p>
+        }
 
-      <div class="form-group mt-3">
-        <label for="xuxeSelect">Tria una Xuxe de la teva motxilla:</label>
-        <select id="xuxeSelect" [(ngModel)]="selectedXuxeId" class="pixel-input">
-          <option [ngValue]="null" disabled>-- Selecciona una Xuxe --</option>
-          @for (item of inventoryXuxes; track item.id) {
-            <option [ngValue]="item.id">{{ item.name }} (Tens: {{ item.pivot.quantity }})</option>
-          }
-          @empty {
-            <option disabled>No tens xuxes a l'inventari!</option>
-          }
-        </select>
-      </div>
+        <div class="form-group mt-3">
+          <label for="xuxeSelect">Tria una Xuxe de la teva motxilla:</label>
+          <select id="xuxeSelect" [(ngModel)]="selectedXuxeId" class="pixel-input">
+            <option [ngValue]="null" disabled>-- Selecciona una Xuxe --</option>
+            @for (item of inventoryXuxes; track item.id) {
+              <option [ngValue]="item.id">{{ item.name }} (Tens: {{ item.pivot.quantity }})</option>
+            }
+            @empty {
+              <option disabled>No tens xuxes a l'inventari!</option>
+            }
+          </select>
+        </div>
 
-      <div class="modal-actions mt-4">
-        <button class="pixel-button btn-red" (click)="closeModal()">Cancel·lar</button>
-        <button class="pixel-button btn-green" [disabled]="!selectedXuxeId || evolutionPreview" (click)="feed()">
-          @if (evolutionPreview) { ✨ Evolucionant... } @else { 🍬 Alimentar }
-        </button>
+        <div class="modal-actions mt-4">
+          <button class="pixel-button btn-red" (click)="closeModal()">Cancel·lar</button>
+          <button class="pixel-button btn-green" [disabled]="!selectedXuxeId || evolutionPreview" (click)="feed()">
+            @if (evolutionPreview) { ✨ Evolucionant... } @else { 🍬 Alimentar }
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-}
+  }
+
+  @if (isVaccinateModalOpen) {
+    <div class="modal-backdrop" (click)="closeVaccinateModal()"></div>
+    <div class="custom-modal" role="dialog" aria-modal="true" aria-labelledby="vaccinate-modal-title">
+      <div class="modal-content">
+        <h2 id="vaccinate-modal-title">Curar a {{ selectedXuxemon?.name }}</h2>
+        
+        <p>Estat actual: <strong style="color: red;">🦠 {{ selectedXuxemon?.pivot?.disease }}</strong></p>
+
+        <div class="form-group mt-3">
+          <label for="vaccineSelect">Tria una Vacuna de la teva motxilla:</label>
+          <select id="vaccineSelect" [(ngModel)]="selectedVaccineId" class="pixel-input">
+            <option [ngValue]="null" disabled>-- Selecciona una Vacuna --</option>
+            @for (item of inventoryVaccines; track item.id) {
+              <option [ngValue]="item.id">{{ item.name }} (Tens: {{ item.pivot.quantity }})</option>
+            }
+            @empty {
+              <option disabled>No tens vacunes a l'inventari!</option>
+            }
+          </select>
+        </div>
+
+        <div class="modal-actions mt-4">
+          <button class="pixel-button btn-red" (click)="closeVaccinateModal()">Cancel·lar</button>
+          <button class="pixel-button btn-blue" [disabled]="!selectedVaccineId" (click)="vaccinate()">
+            💉 Aplicar Vacuna
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 </div>

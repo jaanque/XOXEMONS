@@ -100,4 +100,64 @@ class XuxemonController extends Controller {
                 'disease' => $userXuxemon->disease // Retornem la malaltia per al Frontend
             ]);
         }
+
+    // --- LÒGICA DE VACUNACIÓ (Fase 3) ---
+    public function vaccinate(Request $request, $pivot_id)
+    {
+        $user = Auth::user();
+        
+        // 1. Busquem el Xuxemon de l'usuari
+        $userXuxemon = \App\Models\UserXuxemon::where('id', $pivot_id)
+                        ->where('user_id', $user->id)
+                        ->first();
+
+        if (!$userXuxemon) {
+            return response()->json(['message' => 'Xuxemon no trobat a la teva col·lecció'], 404);
+        }
+
+        // 2. Comprovem si realment està malalt
+        if (!$userXuxemon->disease) {
+            return response()->json(['message' => 'Aquest Xuxemon ja està totalment sa!'], 400);
+        }
+
+        // 3. Comprovem l'item (Vacuna) que volem fer servir
+        $itemId = $request->input('item_id');
+        $userItem = $user->items()->where('item_id', $itemId)->first();
+
+        if (!$userItem || $userItem->pivot->quantity < 1) {
+            return response()->json(['message' => 'No tens aquesta vacuna a la teva motxilla'], 400);
+        }
+
+        // 4. Comprovem si la vacuna serveix per a la malaltia
+        $vaccineName = $userItem->name;
+        $currentDisease = $userXuxemon->disease;
+        $cured = false;
+
+        // Regles del dossier:
+        if ($vaccineName === 'Xocolatina' && $currentDisease === 'Bajón de azúcar') {
+            $cured = true;
+        } elseif ($vaccineName === 'Xal de fruites' && $currentDisease === 'Atracón') {
+            $cured = true;
+        } elseif ($vaccineName === 'Inxulina') {
+            $cured = true; // L'inxulina ho cura tot
+        }
+
+        // Si la vacuna no encaixa amb la malaltia:
+        if (!$cured) {
+            return response()->json(['message' => "La vacuna $vaccineName no serveix per curar $currentDisease!"], 400);
+        }
+
+        // 5. Restem 1 vacuna de l'inventari
+        $user->items()->updateExistingPivot($itemId, [
+            'quantity' => $userItem->pivot->quantity - 1
+        ]);
+
+        // 6. Curem el Xuxemon (esborrem la malaltia)
+        $userXuxemon->disease = null;
+        $userXuxemon->save();
+
+        return response()->json([
+            'message' => 'El teu Xuxemon s\'ha curat correctament i torna a estar actiu! 🩺✨'
+        ]);
+    }
 }
