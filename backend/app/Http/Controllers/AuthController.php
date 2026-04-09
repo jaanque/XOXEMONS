@@ -92,4 +92,46 @@ class AuthController extends Controller
             'user' => auth('api')->user()
         ]);
     }
+
+    // --- RECOMPENSA DIÀRIA ---
+    public function claimDailyReward(Request $request)
+    {
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $now = now();
+
+        // 1. Comprovem si ja l'ha reclamat avui
+        if ($user->last_daily_reward && $user->last_daily_reward->isToday()) {
+            return response()->json(['message' => 'Ja has reclamat la teva recompensa avui! Torna demà.'], 400);
+        }
+
+        // 2. Donem 1 Xuxemon 'Petit' aleatori
+        $randomXuxemon = \App\Models\Xuxemon::where('size', 'Petit')->inRandomOrder()->first();
+        if ($randomXuxemon) {
+            $user->xuxemons()->attach($randomXuxemon->id, ['food_eaten' => 0, 'disease' => null]);
+        }
+
+        // 3. Donem 10 xuxes (5 unitats de 2 xuxes aleatòries)
+        $xuxes = \App\Models\Item::where('type', 'xuxe')->inRandomOrder()->take(2)->get();
+        
+        foreach ($xuxes as $xuxe) {
+            $existingItem = $user->items()->where('item_id', $xuxe->id)->first();
+            if ($existingItem) {
+                $user->items()->updateExistingPivot($xuxe->id, [
+                    'quantity' => $existingItem->pivot->quantity + 5
+                ]);
+            } else {
+                $user->items()->attach($xuxe->id, ['quantity' => 5]);
+            }
+        }
+
+        // 4. Actualitzem la data de l'última recompensa
+        $user->last_daily_reward = $now;
+        $user->save();
+
+        return response()->json([
+            'message' => '🎉 Recompensa diària reclamada! Has guanyat 10 xuxes i un ' . ($randomXuxemon ? $randomXuxemon->name : 'Nou Xuxemon') . '!'
+        ]);
+    }
+
+
 }

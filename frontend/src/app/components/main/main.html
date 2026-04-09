@@ -22,6 +22,15 @@
       </button>
     </div>
   </div>
+  
+  <div class="daily-reward-container text-center mt-4">
+  <button class="pixel-button btn-blue" 
+          (click)="claimReward()" 
+          [disabled]="isClaiming">
+    @if (isClaiming) { ⏳ Reclamant... } 
+    @else { 🎁 Reclamar Recompensa Diària }
+  </button>
+  </div>
 
   <div class="retro-box" style="text-align: center;">
     
