@@ -79,17 +79,23 @@ class XuxemonController extends Controller {
             }
 
             // 3. SISTEMA D'INFECCIÓ (només si no ha evolucionat)
-            if (!$evolved) {
-                $chance = rand(1, 100);
-                
-                if ($chance <= 15) {
-                    $userXuxemon->disease = 'Atracón';
-                } elseif ($chance <= 25) { // 15 + 10 = 25% (Sobredosis)
-                    $userXuxemon->disease = 'Sobredosis de sucre';
-                } elseif ($chance <= 30) { // 25 + 5 = 30% (Bajón)
-                    $userXuxemon->disease = 'Bajón de azúcar';
-                }
+        if (!$evolved) {
+            $chance = rand(1, 100);
+            
+            // Llegim de la base de dades. Si l'Admin encara no ha guardat res, 
+            // posem els valors per defecte del dossier (15, 10, 5)
+            $probAtracon = \App\Models\Setting::where('key', 'atracon_prob')->value('value') ?? 15;
+            $probSobredosis = \App\Models\Setting::where('key', 'sobredosis_prob')->value('value') ?? 10;
+            $probBajon = \App\Models\Setting::where('key', 'bajon_prob')->value('value') ?? 5;
+
+            if ($chance <= $probAtracon) {
+                $userXuxemon->disease = 'Atracón';
+            } elseif ($chance <= ($probAtracon + $probSobredosis)) { 
+                $userXuxemon->disease = 'Sobredosis de sucre';
+            } elseif ($chance <= ($probAtracon + $probSobredosis + $probBajon)) { 
+                $userXuxemon->disease = 'Bajón de azúcar';
             }
+        }
 
             $userXuxemon->save();
 

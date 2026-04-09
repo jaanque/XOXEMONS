@@ -42,5 +42,11 @@ export class XuxemonService {
     return this.http.post<any>(`${this.apiUrl}/user/daily-reward`, {});
   }
 
-  
+  getSettings(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/admin/settings`);
+  }
+
+  updateSettings(settings: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/admin/settings`, settings);
+  }
 }

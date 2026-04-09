@@ -22,4 +22,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/xuxemons/{pivot_id}/feed', [XuxemonController::class, 'feed']);
     Route::post('/xuxemons/{pivot_id}/vaccinate', [XuxemonController::class, 'vaccinate']); 
     Route::post('/user/daily-reward', [\App\Http\Controllers\AuthController::class, 'claimDailyReward']);
+    Route::get('/admin/settings', [\App\Http\Controllers\AdminController::class, 'getSettings']);
+    Route::post('/admin/settings', [\App\Http\Controllers\AdminController::class, 'updateSettings']);
 });

@@ -21,6 +21,12 @@
   padding: 25px;
   border-radius: 8px;
   border: 1px solid #e0e0e0;
+  margin-bottom: 30px; /* Separació entre panells */
+}
+
+/* Això treu el marge inferior de l'últim panell perquè no sobri espai */
+.admin-panel:last-child {
+  margin-bottom: 0;
 }
 
 .admin-panel h3 {
@@ -29,6 +35,13 @@
   margin-bottom: 20px;
   border-bottom: 2px dashed #ccc;
   padding-bottom: 10px;
+}
+
+.panel-description {
+  color: #7f8c8d;
+  font-size: 0.95em;
+  margin-bottom: 20px;
+  line-height: 1.5;
 }
 
 .form-group {
@@ -84,6 +97,15 @@
 .btn-submit[disabled] {
   background-color: #a9dfbf;
   cursor: not-allowed;
+}
+
+/* Botó específic per a la secció de configuració (color blau) */
+.btn-save-settings {
+  background-color: #2980b9;
+}
+
+.btn-save-settings:hover:not([disabled]) {
+  background-color: #3498db;
 }
 
 /* Alertes d'èxit i error */

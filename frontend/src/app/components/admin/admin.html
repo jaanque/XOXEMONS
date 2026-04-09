@@ -4,13 +4,14 @@
   </button>
   
   <h2 class="page-title">
-    🎒 La Meva Motxilla 
+    🛠️ Panell d'Admin
   </h2>
   
   <button routerLink="/profile" class="pixel-button btn-blue">
     👤 Perfil
   </button>
 </div>
+
 <div class="admin-container">
   <h2>🤖 Panell de Control de l'Administrador</h2>
 
@@ -29,9 +30,9 @@
         </select>
       </div>
       
-    <button type="button" class="pixel-button btn-blue" (click)="giveRandomXuxemon()" style="margin-top: 10px; margin-bottom: 20px;">
-    🎲 Regalar Xuxemon Aleatori a aquest jugador
-    </button>
+      <button type="button" class="pixel-button btn-blue" (click)="giveRandomXuxemon()" style="margin-top: 10px; margin-bottom: 20px;">
+      🎲 Regalar Xuxemon Aleatori a aquest jugador
+      </button>
 
       <div class="form-group">
         <label>Tipus d'ítem:</label>
@@ -45,7 +46,7 @@
         <label>Nom de l'ítem (ex: Xuxe de Maduixa):</label>
         <input type="text" formControlName="item_name" placeholder="Escriu l'ítem...">
       </div>
-
+      
       <div class="form-group">
         <label>Quantitat:</label>
         <input type="number" formControlName="quantity" min="1">
@@ -61,4 +62,31 @@
       <button type="submit" [disabled]="itemForm.invalid" class="btn-submit">Enviar Ítem</button>
     </form>
   </div>
+
+  <div class="admin-panel">
+    <h3>🦠 Probabilitat de Malalties Global</h3>
+    <p class="panel-description">
+      Ajusta el percentatge de probabilitats que té un Xuxemon d'emmalaltir al menjar una xuxe. (La suma no pot passar del 100%).
+    </p>
+
+    <div class="form-group">
+      <label>🤢 Probabilitat d'Atracón (%):</label>
+      <input type="number" [(ngModel)]="settings.atracon_prob" min="0" max="100">
+    </div>
+
+    <div class="form-group">
+      <label>😵 Probabilitat de Sobredosis de Sucre (%):</label>
+      <input type="number" [(ngModel)]="settings.sobredosis_prob" min="0" max="100">
+    </div>
+
+    <div class="form-group">
+      <label>📉 Probabilitat de Bajón de Azúcar (%):</label>
+      <input type="number" [(ngModel)]="settings.bajon_prob" min="0" max="100">
+    </div>
+
+    <button type="button" class="btn-submit btn-save-settings" (click)="saveSettings()" [disabled]="isSaving">
+      @if(isSaving) { ⏳ Guardant... } @else { 💾 Guardar Configuració Global }
+    </button>
+  </div>
+
 </div>

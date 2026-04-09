@@ -1,14 +1,15 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms'; // Afegit FormsModule
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../services/auth';
+import { XuxemonService } from '../../services/xuxemon.service'; // Afegit pel XuxemonService
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule], // Afegit FormsModule aquí
   templateUrl: './admin.html',
   styleUrl: './admin.css'
 })
@@ -16,14 +17,24 @@ export class Admin implements OnInit {
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
   private authService = inject(AuthService);
+  private xuxemonService = inject(XuxemonService); // Servei de Xuxemons per les configuracions
 
+  // --- VARIABLES SECCIÓ REGALS ---
   users: any[] = [];
   itemForm: FormGroup;
   successMessage: string = '';
   errorMessage: string = '';
 
+  // --- VARIABLES SECCIÓ CONFIGURACIÓ (MALALTIES) ---
+  settings = {
+    atracon_prob: 15,
+    sobredosis_prob: 10,
+    bajon_prob: 5
+  };
+  isSaving = false;
+
   constructor() {
-    // Creem el formulari reactiu
+    // Creem el formulari reactiu per la zona de regals
     this.itemForm = this.fb.group({
       user_id: ['', Validators.required],
       item_type: ['xuxe', Validators.required], // 'xuxe' o 'vacuna'
@@ -34,8 +45,13 @@ export class Admin implements OnInit {
 
   ngOnInit() {
     this.loadUsers();
+    this.loadSettings(); // Carreguem les probabilitats globals a l'iniciar
   }
 
+  // ==========================================
+  // 1. LÒGICA DE REGALS (USuaris i Ítems)
+  // ==========================================
+  
   // Carreguem tots els usuaris de la BBDD
   loadUsers() {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getToken()}`);
@@ -85,5 +101,42 @@ export class Admin implements OnInit {
         }
       });
     }
+  }
+
+  // ==========================================
+  // 2. LÒGICA DE CONFIGURACIÓ GLOBAL (MALALTIES)
+  // ==========================================
+
+  loadSettings() {
+    this.xuxemonService.getSettings().subscribe({
+      next: (data) => {
+        // Si hi ha dades a la BD, sobreescrivim els valors per defecte
+        if (data.atracon_prob !== undefined) this.settings.atracon_prob = data.atracon_prob;
+        if (data.sobredosis_prob !== undefined) this.settings.sobredosis_prob = data.sobredosis_prob;
+        if (data.bajon_prob !== undefined) this.settings.bajon_prob = data.bajon_prob;
+      },
+      error: (err) => console.error('Error carregant configuració', err)
+    });
+  }
+
+  saveSettings() {
+    // Validació bàsica perquè la suma no passi del 100%
+    const total = this.settings.atracon_prob + this.settings.sobredosis_prob + this.settings.bajon_prob;
+    if (total > 100) {
+      alert('⚠️ Error: La suma de les probabilitats no pot superar el 100%. Actualment suma: ' + total + '%');
+      return;
+    }
+
+    this.isSaving = true;
+    this.xuxemonService.updateSettings(this.settings).subscribe({
+      next: (res) => {
+        alert(res.message);
+        this.isSaving = false;
+      },
+      error: (err) => {
+        alert('Error al guardar: ' + err.error.message);
+        this.isSaving = false;
+      }
+    });
   }
 }
