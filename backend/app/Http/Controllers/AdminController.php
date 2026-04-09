@@ -85,4 +85,31 @@ class AdminController extends Controller
 
         return response()->json(['message' => 'Has regalat el Xuxemon: ' . $randomXuxemon->name]);
     }
+
+    // --- LLEGIR CONFIGURACIONS GLOBALS ---
+    public function getSettings() {
+        // Retornem un objecte clau-valor fàcil de llegir per Angular
+        $settings = \App\Models\Setting::pluck('value', 'key');
+        return response()->json($settings);
+    }
+
+    // --- GUARDAR CONFIGURACIONS GLOBALS ---
+    public function updateSettings(\Illuminate\Http\Request $request) {
+        // Validem que ens enviïn els 3 valors i siguin números entre 0 i 100
+        $validated = $request->validate([
+            'atracon_prob' => 'required|integer|min:0|max:100',
+            'sobredosis_prob' => 'required|integer|min:0|max:100',
+            'bajon_prob' => 'required|integer|min:0|max:100',
+        ]);
+
+        // Guardem o actualitzem cada paràmetre a la base de dades
+        foreach($validated as $key => $value) {
+            \App\Models\Setting::updateOrCreate(
+                ['key' => $key], 
+                ['value' => $value]
+            );
+        }
+
+        return response()->json(['message' => '⚙️ Configuració global del joc actualitzada amb èxit!']);
+    }
 }
