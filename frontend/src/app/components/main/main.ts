@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
 import { LoadingService } from '../../services/loading';
+import { XuxemonService } from '../../services/xuxemon.service';
 
 @Component({
   selector: 'app-main',
@@ -13,10 +14,14 @@ import { LoadingService } from '../../services/loading';
 })
 export class Main implements OnInit {
   userData: any = null;
+  
+  // Variable per saber si estem reclamant la recompensa (evita doble clic)
+  isClaiming: boolean = false;
 
   private authService = inject(AuthService);
   private router = inject(Router);
   private loadingService = inject(LoadingService);
+  private xuxemonService = inject(XuxemonService); // <-- Afegit per la Recompensa
 
   ngOnInit() {
     if (!this.authService.getToken()) {
@@ -32,6 +37,21 @@ export class Main implements OnInit {
         console.error('Error de seguretat', err);
         this.authService.removeToken();
         this.router.navigate(['/login']);
+      }
+    });
+  }
+
+  // --- RECOMPENSA DIÀRIA ---
+  claimReward() {
+    this.isClaiming = true;
+    this.xuxemonService.claimDailyReward().subscribe({
+      next: (response) => {
+        alert(response.message); // Missatge d'èxit
+        this.isClaiming = false;
+      },
+      error: (err) => {
+        alert('⚠️ ' + err.error.message); // Missatge d'error ("Ja has reclamat avui...")
+        this.isClaiming = false;
       }
     });
   }
@@ -63,5 +83,5 @@ export class Main implements OnInit {
           });
         }
       });
-    }
   }
+}

@@ -38,5 +38,9 @@ export class XuxemonService {
     );
   }
 
+  claimDailyReward(): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/user/daily-reward`, {});
+  }
+
   
 }
