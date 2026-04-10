@@ -13,7 +13,7 @@ import { InventoryService } from '../../services/inventory.service';
 export class Inventory implements OnInit {
   private inventoryService = inject(InventoryService);
   
-  // Array fix de 20 posicions (null significa espai buit)
+  // Array fix de 20 posicions (null significa espai buit) motxilla
   slots: any[] = new Array(20).fill(null);
 
   ngOnInit() {

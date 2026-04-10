@@ -45,8 +45,12 @@
       
       <h2 class="xuxe-name">{{ xuxe.name }}</h2>
       
+      <!-- Filtrar per clase i tamany de Xuxemon -->
+
       <div class="badges-container">
-        <span class="badge type-badge" [ngClass]="xuxe.type.toLowerCase()">
+        <!-- Colors automatics segons el tipo amb el ngClass-->
+        <span class="badge type-badge" 
+              [ngClass]="xuxe.type.toLowerCase()">
           {{ xuxe.type }}
         </span>
         <span class="badge size-badge">{{ xuxe.size }}</span>

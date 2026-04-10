@@ -55,6 +55,8 @@ export class Xuxedex implements OnInit {
   }
 
   // Funció que s'executa cada vegada que l'usuari toca els select de filtres
+  // per a dir al frontend que torni a calcular quins Xuxemons mostrar 
+  // segons els filtres seleccionats
   applyFilters() {
     this.filteredXuxemons = this.xuxemons.filter(xuxe => {
       // Comprovem si coincideix el tipus (o si no hi ha cap filtre seleccionat)
