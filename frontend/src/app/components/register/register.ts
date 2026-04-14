@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -11,7 +11,14 @@ import { AuthService } from '../../services/auth'; // <-- Importem el teu auth.t
   templateUrl: './register.html', // (Si el teu arxiu HTML es diu register.component.html, posa-ho aquí)
   styleUrl: './register.css'      // (Igual amb el CSS)
 })
-export class Register {
+export class Register implements OnInit {
+
+  ngOnInit() {
+    if (this.authService.getToken()) {
+      this.router.navigate(['/main']);
+    }
+  }
+
   registerForm: FormGroup;
   errorMessage: string = '';
 
