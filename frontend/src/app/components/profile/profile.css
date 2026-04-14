@@ -1,108 +1,227 @@
-/* 1. Importamos la fuente pixelada retro de Google Fonts */
+/* ============================================================
+   XUXEMONS — PROFILE
+   Nota: molts elements usen estils inline → !important.
+   ============================================================ */
+
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-/* --- FONDO GLOBAL Y FUENTE --- */
+/* Vídeo de fons — sense filtres */
+.fons-animat {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  filter: none;
+}
+
 body {
-  font-family: 'Press Start 2P', cursive !important;
-  /* Fondo estilo pueblo inicial retro */
-  background-image: url('https://wallpaperaccess.com/full/1751351.png'); 
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  /* Esta línea es MAGIA: fuerza al navegador a mostrar los píxeles cuadrados, sin difuminar */
-  image-rendering: pixelated; 
-  margin: 0;
-  padding: 0;
-  color: #222;
-  font-size: 10px; /* La fuente retro es ENORME, así que la hacemos más pequeña */
-  line-height: 1.8;
-}
-
-/* --- CAJAS DE DIÁLOGO (Estilo menú Pokémon) --- */
-/* Este truco selecciona tus contenedores principales sin que tengas que cambiar el HTML */
-div[style*="max-width"] {
-  background-color: #f8f8f8 !important;
-  border: 6px solid #333 !important;
-  border-radius: 8px !important;
-  /* Sombra dura negra al estilo 16-bits */
-  box-shadow: 8px 8px 0px rgba(0,0,0,0.8) !important; 
-  padding: 30px !important;
-  margin-top: 50px !important;
-}
-
-/* --- TÍTULOS --- */
-h1, h2, h3 {
-  text-transform: uppercase;
-  text-shadow: 2px 2px 0px #ccc;
-  text-align: center;
-  color: #d63031; /* Rojo Pokédex */
-  margin-bottom: 30px !important;
-}
-
-/* --- CAMPOS DE TEXTO (Inputs) --- */
-input {
-  font-family: 'Press Start 2P', cursive !important;
+  font-family: 'Press Start 2P', monospace !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: #1a1a1a !important;
   font-size: 10px !important;
-  background-color: #fff !important;
-  border: 4px solid #333 !important;
-  border-radius: 0px !important; /* Puntas cuadradas retro */
-  padding: 12px !important;
-  box-shadow: inset 4px 4px 0px rgba(0,0,0,0.05) !important;
-  outline: none;
-  width: 100% !important;
-  box-sizing: border-box !important;
+  line-height: 1.8 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  image-rendering: auto !important;
 }
 
-input:focus {
-  border-color: #3498db !important; /* Azul al hacer clic */
-  background-color: #f0f8ff !important;
+/* ── CONTENIDOR PRINCIPAL ── */
+div[style*="max-width: 600px"],
+div[style*="max-width:600px"] {
+  max-width: 640px !important;
+  width: calc(100% - 40px) !important;
+  margin: 7vh auto !important;
+  padding: 34px 32px !important;
+  border-radius: 10px !important;
+  font-family: 'Press Start 2P', monospace !important;
+
+  background-color: #f8f8f8 !important;
+  border: 6px solid #303030 !important;
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.55) !important;
+  position: relative !important;
+  z-index: 1 !important;
+  animation: fadeInUp 0.45s ease both !important;
 }
 
-/* --- BOTONES (Amarillo Pokémon con animación de pulsación) --- */
+/* Franja de color superior */
+div[style*="max-width: 600px"]::before,
+div[style*="max-width:600px"]::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #9c27b0 0%, #e53935 50%, #FFCB05 100%);
+  border-radius: 4px 4px 0 0;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── CAPÇALERA ── */
+div[style*="display: flex"][style*="border-bottom"] {
+  border-bottom: 3px solid #e0e0e0 !important;
+  padding-bottom: 16px !important;
+  margin-bottom: 22px !important;
+}
+
+/* ── TÍTOL ── */
+h2 {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: clamp(0.65rem, 1.8vw, 0.85rem) !important;
+  color: #9c27b0 !important;
+  text-shadow: 2px 2px 0 #e1bee7 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  text-align: left !important;
+  margin: 0 !important;
+}
+
+/* ── BOTONS ── */
 button {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 12px !important;
-  background-color: #ffcc00 !important; /* Amarillo eléctrico */
-  color: #333 !important;
-  border: 4px solid #333 !important;
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 0.5rem !important;
+  padding: 10px 16px !important;
+  cursor: pointer !important;
   border-radius: 4px !important;
-  padding: 15px !important;
-  /* Sombra que hace que parezca 3D */
-  box-shadow: 4px 4px 0px #333 !important;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.1s; /* Movimiento rapidísimo */
-  margin-top: 10px;
+  border: 3px solid #303030 !important;
+  box-shadow: 3px 3px 0 #303030 !important;
+  transition: transform 0.1s, box-shadow 0.1s !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  color: #fff !important;
 }
 
-button:hover {
-  background-color: #ffdd44 !important;
+button:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  box-shadow: 4px 4px 0 #303030 !important;
+  filter: brightness(1.1) !important;
 }
 
-/* El efecto al hacer clic: quita la sombra y hunde el botón */
-button:active {
-  box-shadow: 0px 0px 0px #333 !important; 
-  transform: translateY(4px); 
+button:active:not(:disabled) {
+  transform: translateY(2px) !important;
+  box-shadow: 0 0 0 #303030 !important;
 }
 
-/* Botón bloqueado (cuando el formulario no está relleno) */
-button[disabled] {
-  background-color: #ccc !important;
+/* Botó "Tornar al Joc" */
+button[style*="background-color: #607d8b"] {
+  background-color: #607d8b !important;
+}
+button[style*="background-color: #607d8b"]:hover {
+  background-color: #455a64 !important;
+}
+
+/* ── BLOC D'ID ── */
+div[style*="background-color: #e3f2fd"] {
+  background-color: #e3f2fd !important;
+  border: 3px solid #1e88e5 !important;
+  border-radius: 8px !important;
+  padding: 18px !important;
+  margin-bottom: 22px !important;
+  box-shadow: 3px 3px 0 #1e88e5 !important;
+}
+
+div[style*="background-color: #e3f2fd"] span {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 0.46rem !important;
   color: #666 !important;
-  box-shadow: 4px 4px 0px #999 !important;
-  cursor: not-allowed;
-  transform: none;
+  display: block !important;
+  margin-bottom: 8px !important;
+  text-transform: uppercase !important;
 }
 
-/* --- ENLACES Y TEXTOS PEQUEÑOS --- */
-a {
-  color: #0984e3 !important;
-  text-decoration: none;
+div[style*="background-color: #e3f2fd"] strong {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 1.5rem !important;
+  color: #1565c0 !important;
+  letter-spacing: 3px !important;
+  text-shadow: 1px 1px 0 #90caf9 !important;
 }
-a:hover {
-  color: #d63031 !important;
+
+/* ── PARÀGRAFS DE DADES ── */
+div[style*="max-width: 600px"] p,
+div[style*="max-width:600px"] p {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 0.5rem !important;
+  color: #444 !important;
+  line-height: 2 !important;
+  margin-bottom: 10px !important;
+  padding: 10px 14px !important;
+  background-color: #fafafa !important;
+  border-left: 4px solid #9c27b0 !important;
+  border-radius: 0 4px 4px 0 !important;
+  border-bottom: 1px solid #eee !important;
+  transition: background 0.15s !important;
 }
-label {
-  font-weight: bold;
-  color: #555;
+
+div[style*="max-width: 600px"] p:hover,
+div[style*="max-width:600px"] p:hover {
+  background-color: #f3e5f5 !important;
+}
+
+div[style*="max-width: 600px"] p strong,
+div[style*="max-width:600px"] p strong {
+  color: #303030 !important;
+}
+
+/* ── BOTONS D'ACCIÓ ── */
+div[style*="margin-top: 40px"] {
+  border-top: 2px dashed #e0e0e0 !important;
+  padding-top: 22px !important;
+  display: flex !important;
+  justify-content: center !important;
+  gap: 16px !important;
+  flex-wrap: wrap !important;
+}
+
+button[style*="background-color: #ff9800"] {
+  background-color: #ff9800 !important;
+  color: #fff !important;
+}
+button[style*="background-color: #ff9800"]:hover {
+  background-color: #e65100 !important;
+}
+
+button[style*="background-color: #f44336"] {
+  background-color: #f44336 !important;
+  color: #fff !important;
+}
+button[style*="background-color: #f44336"]:hover {
+  background-color: #b71c1c !important;
+}
+
+/* ── CÀRREGA ── */
+div[style*="text-align: center"][style*="padding: 40px"] h3 {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 0.68rem !important;
+  color: #9e9e9e !important;
+  animation: blink 1.2s steps(1) infinite !important;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 680px) {
+  div[style*="max-width: 600px"],
+  div[style*="max-width:600px"] {
+    width: calc(100% - 24px) !important;
+    padding: 22px 16px !important;
+    margin: 4vh auto !important;
+    border-width: 4px !important;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.45) !important;
+  }
+  div[style*="display: flex"][style*="border-bottom"] {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  div[style*="max-width: 600px"] p,
+  div[style*="max-width:600px"] p {
+    font-size: 0.44rem !important;
+  }
 }
