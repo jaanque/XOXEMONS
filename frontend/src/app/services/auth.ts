@@ -21,26 +21,32 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, credentials);
   }
 
-  //Obtenim el token guardat 
+  // Guardem el token al localStorage quan fem login
+  setToken(token: string): void {
+    localStorage.setItem('auth_token', token);
+  }
+
+  // Obtenim el token guardat 
   getToken(): string | null {
     return localStorage.getItem('auth_token');
   }
 
-  //Esborram el token quan l'usuari fa logout
+  // Esborram el token quan l'usuari fa logout
   logout(): Observable<any> {
     const token = this.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.post(`${this.apiUrl}/logout`, {}, { headers });
   }
-  //esborrar token del navegador
+
+  // Esborrar token del navegador
   removeToken(): void {
     localStorage.removeItem('auth_token');
   }
 
-  //Demanar a Laravel que ens retorni les dades de l'usuari actual (per mostrar el perfil, per exemple)
+  // Demanar a Laravel que ens retorni les dades de l'usuari actual (per mostrar el perfil, per exemple)
   getProfile(): Observable<any> {
     const token = this.getToken();
-    //Afegim el token a les capçaleres de la petició per autenticar-nos davant Laravel
+    // Afegim el token a les capçaleres de la petició per autenticar-nos davant Laravel
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/me`, { headers });
   }
