@@ -6,7 +6,60 @@
   <button routerLink="/profile" class="pixel-button btn-blue">👤 Perfil</button>
 </div>
 
-<div class="container mt-4">
-  <h2 class="title text-center">🤝 Comunitat Xuxemon</h2>
-  <p class="text-center">Aquí hi anirà el cercador, les sol·licituds i la teva llista d'amics.</p>
+<div class="friends-container mt-4">
+  
+  <section class="search-section" aria-labelledby="search-title">
+    <h3 id="search-title">🔍 Cercar Nous Amics</h3>
+    <div class="input-group">
+      <label for="searchFriends" class="sr-only">Cercar usuari per ID o Nom</label>
+      <input type="text" id="searchFriends" [formControl]="searchControl" class="pixel-input full-width" placeholder="Escriu mínim 3 lletres (Ex: #Joan1234)">
+    </div>
+
+    <div class="search-results mt-2" aria-live="polite">
+      @if (searchControl.value && searchControl.value.length > 0 && searchControl.value.length < 3) {
+        <small class="text-muted">Escriu com a mínim 3 caràcters per buscar...</small>
+      }
+      
+      @for (user of searchResults; track user.id) {
+        <div class="friend-card result-card">
+          <div class="user-info">
+            <strong>{{ user.name }}</strong>
+            <span class="custom-id">{{ user.custom_id }}</span>
+          </div>
+          <button class="pixel-button btn-green small-btn" (click)="sendRequest(user.id)" aria-label="Enviar sol·licitud d'amistat a {{ user.name }}">
+            ➕ Afegir
+          </button>
+        </div>
+      } @empty {
+        @if (searchControl.value && searchControl.value.length >= 3) {
+          <p>No s'han trobat usuaris.</p>
+        }
+      }
+    </div>
+  </section>
+
+  <section class="requests-section mt-4" aria-labelledby="requests-title">
+    <h3 id="requests-title">
+      📩 Sol·licituds Pendents 
+      @if (pendingRequests.length > 0) {
+        <span class="badge" [attr.aria-label]="pendingRequests.length + ' sol·licituds pendents'">{{ pendingRequests.length }}</span>
+      }
+    </h3>
+
+    @for (req of pendingRequests; track req.friendship_id) {
+      <div class="friend-card pending-card">
+        <div class="user-info">
+          <strong>{{ req.name }}</strong>
+          <span class="custom-id">{{ req.custom_id }}</span> vol ser el teu amic!
+        </div>
+        <div class="actions">
+          <button class="pixel-button btn-green small-btn" (click)="acceptRequest(req.friendship_id)">✅ Acceptar</button>
+          <button class="pixel-button btn-red small-btn" (click)="rejectRequest(req.friendship_id)">❌ Rebutjar</button>
+        </div>
+      </div>
+    } @empty {
+      <p class="empty-state">No tens cap sol·licitud pendent.</p>
+    }
+  </section>
+
 </div>
