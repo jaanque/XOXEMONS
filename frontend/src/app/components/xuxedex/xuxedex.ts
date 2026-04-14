@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // Necessari pels filtres
@@ -156,5 +156,16 @@ export class Xuxedex implements OnInit {
         alert('Error: ' + err.error.message);
       }
     });
+  }
+
+  // Escolta l'esdeveniment de la tecla Escape a tot el document
+  @HostListener('document:keydown.escape')
+  handleKeyboardEvent() {
+    if (this.isModalOpen) {
+      this.closeModal();
+    }
+    if (this.isVaccinateModalOpen) {
+      this.closeVaccinateModal();
+    }
   }
 }

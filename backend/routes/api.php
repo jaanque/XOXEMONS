@@ -24,4 +24,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/user/daily-reward', [\App\Http\Controllers\AuthController::class, 'claimDailyReward']);
     Route::get('/admin/settings', [\App\Http\Controllers\AdminController::class, 'getSettings']);
     Route::post('/admin/settings', [\App\Http\Controllers\AdminController::class, 'updateSettings']);
+    Route::get('/friends/search', [\App\Http\Controllers\FriendController::class, 'searchUsers']);
+    Route::post('/friends/request', [\App\Http\Controllers\FriendController::class, 'sendRequest']);
+    Route::get('/friends/requests', [\App\Http\Controllers\FriendController::class, 'getPendingRequests']);
+    Route::post('/friends/accept/{id}', [\App\Http\Controllers\FriendController::class, 'acceptRequest']);
+    Route::delete('/friends/reject/{id}', [\App\Http\Controllers\FriendController::class, 'rejectRequest']);
+    Route::get('/friends', [\App\Http\Controllers\FriendController::class, 'getFriends']);
+    Route::delete('/friends/{id}', [\App\Http\Controllers\FriendController::class, 'removeFriend']);
 });
