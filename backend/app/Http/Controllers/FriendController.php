@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Friendship;
 use Illuminate\Support\Facades\Auth;
 
+
 class FriendController extends Controller
 {
     // 1. Cercar usuaris per ID (mínim 3 caràcters es controla al front)

@@ -1,0 +1,62 @@
+.friends-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.full-width {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.friend-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+  transition: transform 0.2s;
+}
+
+.friend-card:hover {
+  transform: scale(1.02);
+}
+
+.result-card { border-color: #007bff; }
+.pending-card { border-color: #ffc107; }
+
+.custom-id {
+  color: #666;
+  font-size: 0.9em;
+  margin-left: 5px;
+}
+
+.small-btn {
+  padding: 5px 10px;
+  font-size: 0.9em;
+  margin-left: 5px;
+}
+
+.badge {
+  background-color: #dc3545;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  vertical-align: top;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

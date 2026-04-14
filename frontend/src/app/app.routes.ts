@@ -8,6 +8,8 @@ import { Inventory } from './components/inventory/inventory';
 import { Admin } from './components/admin/admin';
 import { authGuard } from './guards/auth-guard';  
 import { adminGuard } from './guards/admin.guard';
+import { Friends } from './components/friends/friends';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -18,5 +20,6 @@ export const routes: Routes = [
   { path: 'xuxedex', component: Xuxedex, canActivate: [authGuard] },
   { path: 'inventory', component: Inventory, canActivate: [authGuard] },
   { path: 'admin', component: Admin, canActivate: [authGuard, adminGuard] },
+  { path: 'friends', component: Friends, canActivate: [authGuard] },
   { path: '**', redirectTo: '/login' }
 ];
