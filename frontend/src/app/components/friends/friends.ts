@@ -79,4 +79,15 @@ export class Friends implements OnInit {
       });
     }
   }
+  
+  // Eliminar amic
+  removeFriend(id: number) {
+    if(confirm('Segur que vols eliminar aquest amic? La decisió és irreversible!')) {
+      this.friendService.removeFriend(id).subscribe({
+        next: (res) => alert('🗑️ ' + res.message),
+        error: (err) => alert('Error: ' + err.error.message)
+      });
+    }
+  }
+
 }

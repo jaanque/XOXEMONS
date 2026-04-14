@@ -60,3 +60,14 @@
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+
+/* Estils per a la llista d'amics */
+.friend-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.friend-list li {
+  margin-bottom: 10px;
+}
