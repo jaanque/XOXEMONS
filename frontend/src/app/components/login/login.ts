@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild,ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, inject, ViewChild,ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -13,7 +13,14 @@ import { LoadingService } from '../../services/loading';
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
-export class Login implements AfterViewInit {
+export class Login implements OnInit, AfterViewInit {
+
+  ngOnInit() {
+    if (this.authService.getToken()) {
+      this.router.navigate(['/main']);
+    }
+  }
+
   //Per controlar el vídeo de fons i assegurar-nos que es reprodueix correctament
   @ViewChild('bgVideo') bgVideo!: ElementRef<HTMLVideoElement>;
 
