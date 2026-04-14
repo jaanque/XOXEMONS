@@ -1,38 +1,61 @@
-/* --- CONTENIDOR PRINCIPAL --- */
+/* ============================================================
+   XUXEMONS — INVENTORY (La Motxilla)
+   Estètica: Pokémon Retro Colorit
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* ── CONTENIDOR PRINCIPAL ── */
 .inventory-container {
-  max-width: 650px;
-  margin: 30px auto;
-  padding: 25px;
-  background-color: #f4ecd8; /* Color pergamí clar */
-  border: 6px solid #5d4037; /* Vora marró fosca estil retro */
-  border-radius: 16px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  max-width: 680px;
+  width: calc(100% - 32px);
+  margin: 0 auto 48px;
+  padding: 26px;
+
+  background-color: #f4ecd8;
+  border: 6px solid #5d4037;
+  border-radius: 14px;
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
+  position: relative;
+  animation: fadeInUp 0.45s ease both;
 }
 
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Títol */
 .inventory-container h2 {
-  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.65rem, 2vw, 0.88rem);
   color: #5d4037;
-  margin-bottom: 20px;
+  text-align: center;
+  margin: 4px 0 20px;
   text-transform: uppercase;
-  font-weight: 900;
-  font-size: 1.8rem;
-  text-shadow: 1px 1px 0px white;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 0 #fff;
 }
 
-/* --- LA GRAELLA EXACTA 4x5 --- */
+/* ── GRAELLA 4×5 ── */
 .inventory-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(5, 110px); /* Alçada fixa de 110px per fer quadrats clars */
-  gap: 15px;
-  background-color: #8d6e63; /* Fons fosc per la motxilla */
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: inset 0 6px 15px rgba(0,0,0,0.5); /* Ombra interior perquè sembli fonda */
+  grid-template-rows: repeat(5, 110px);
+  gap: 12px;
+
+  background-color: #6d4c41;
+  border: 4px solid #4e342e;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow:
+    inset 0 4px 12px rgba(0,0,0,0.45),
+    inset 0 -2px 6px rgba(255,255,255,0.05);
 }
 
-/* El contenidor genèric de cada espai */
-.slot, .slot-wrapper {
+/* ── SLOT WRAPPER ── */
+.slot-wrapper,
+.slot {
   width: 100%;
   height: 100%;
   display: flex;
@@ -40,94 +63,124 @@
   align-items: center;
 }
 
-/* --- 1. DISSENY DEL FORAT BUIT --- */
+/* ── SLOT BUIT ── */
 .empty-slot {
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 3px dashed rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+  background-color: rgba(0,0,0,0.18);
+  border: 2px dashed rgba(255,255,255,0.2);
+  border-radius: 8px;
   box-sizing: border-box;
 }
 
-/* --- 2. DISSENY DEL FORAT PLE (LA CARTA) --- */
+/* ── TARGETA D'ÍTEM ── */
 .item-card {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-  border: 3px solid #333;
-  border-radius: 12px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
-  padding: 8px;
+  padding: 8px 6px;
   box-sizing: border-box;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  border: 3px solid #303030;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.35);
 }
 
-/* Efecte al passar el ratolí per sobre */
 .item-card:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 8px 15px rgba(0,0,0,0.4);
+  transform: translateY(-5px) scale(1.06);
+  box-shadow: 6px 8px 0 rgba(0,0,0,0.4);
   z-index: 10;
 }
 
-/* Colors segons si són Xuxes (Apilables) o Vacunes */
+/* Variant: Apilable (daurada) */
 .item-card.stackable {
-  border-color: #fbc02d; /* Vora Daurada */
-  background: linear-gradient(135deg, #fffde7 0%, #fff9c4 100%);
+  background: linear-gradient(145deg, #fffde7 0%, #fff9c4 100%);
+  border-color: #fbc02d;
 }
 
+.item-card.stackable:hover {
+  border-color: #f9a825;
+  box-shadow: 5px 7px 0 rgba(251,192,45,0.4);
+}
+
+/* Variant: No Apilable (blava) */
 .item-card.non-stackable {
-  border-color: #29b6f6; /* Vora Blava */
-  background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%);
+  background: linear-gradient(145deg, #e1f5fe 0%, #b3e5fc 100%);
+  border-color: #29b6f6;
 }
 
-/* --- IMATGE DE L'ÍTEM --- */
+.item-card.non-stackable:hover {
+  border-color: #0288d1;
+  box-shadow: 5px 7px 0 rgba(41,182,246,0.4);
+}
+
+/* ── IMATGE ── */
 .item-image {
-  width: 55px; /* Mida controlada */
-  height: 55px;
+  width: 54px;
+  height: 54px;
   object-fit: contain;
   margin-bottom: 6px;
-  filter: drop-shadow(0 4px 3px rgba(0,0,0,0.2)); /* Dóna un toc 3D a la imatge */
+  filter: drop-shadow(0 3px 4px rgba(0,0,0,0.3));
+  image-rendering: pixelated;
+  transition: transform 0.15s ease;
 }
 
-/* --- EL NOM DE L'ÍTEM --- */
+.item-card:hover .item-image {
+  transform: scale(1.08);
+}
+
+/* ── NOM ── */
 .item-name {
-  font-family: Arial, sans-serif; /* Forcem una font neta per evitar estils estranys */
-  font-size: 11px !important; /* Mida súper petita obligatòria */
-  font-weight: 800 !important;
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 9px !important;
+  font-weight: 400 !important;
   text-align: center;
   color: #3e2723;
-  line-height: 1.1;
+  line-height: 1.2;
   width: 100%;
-  /* Aquestes 3 línies eviten que el text llarg surti de la carta (posa "...") */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 0;
-  padding: 0;
+  padding: 0 4px;
 }
 
-/* --- LA BOLETA DE QUANTITAT (x5) --- */
+/* ── BADGE DE QUANTITAT ── */
 .quantity-badge {
-  position: absolute;
-  top: -8px; /* Forcem que surti adalt a la dreta */
-  right: -8px; /* Forcem que surti adalt a la dreta */
-  background-color: #d32f2f !important; /* Vermell fort */
-  color: #ffffff !important;
-  font-family: Arial, sans-serif;
-  font-size: 12px !important;
-  font-weight: 900 !important;
-  padding: 4px 8px !important;
-  border-radius: 20px;
-  border: 2px solid #ffffff;
-  box-shadow: 0 3px 5px rgba(0,0,0,0.3);
+  position: absolute !important;
+  top: -9px !important;
+  right: -9px !important;
+  background-color: #d32f2f !important;
+  color: #fff !important;
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 10px !important;
+  font-weight: 400 !important;
+  padding: 4px 7px !important;
+  border-radius: 20px !important;
+  border: 2px solid #fff !important;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.4) !important;
   z-index: 5;
   display: inline-block;
+  line-height: 1;
+  min-width: 22px;
+  text-align: center;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 680px) {
+  .inventory-container { padding: 18px 14px; border-width: 4px; box-shadow: 5px 5px 0 rgba(0,0,0,0.4); }
+  .inventory-grid { gap: 8px; padding: 12px; grid-template-rows: repeat(5, 90px); }
+  .item-image { width: 42px; height: 42px; }
+  .item-name { font-size: 7px !important; }
+}
+
+@media (max-width: 480px) {
+  .inventory-grid { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(5, 74px); gap: 6px; padding: 10px; }
+  .item-image { width: 34px; height: 34px; margin-bottom: 4px; }
+  .item-name { font-size: 6px !important; }
 }

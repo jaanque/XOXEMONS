@@ -1,39 +1,90 @@
-/* La capa negra que tapa tota la pantalla */
+/* ============================================================
+   XUXEMONS — LOADING OVERLAY
+   ============================================================ */
+
 .loading-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #000000; /* Fons completament negre */
-  z-index: 9999; /* Per sobre de tot (vídeos, menús, etc.) */
-  
-  /* Centrem el contingut */
+  background: #000;
+  z-index: 9999;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  
-  /* TRANSICIÓ D'ENTRADA I SORTIDA (FADE IN / FADE OUT) */
+  gap: 28px;
   opacity: 0;
-  pointer-events: none; /* Si està invisible, deixem que els clics traspassin */
-  transition: opacity 0.5s ease-in-out; 
+  pointer-events: none;
+  transition: opacity 0.45s ease-in-out;
 }
 
-/* Quan afegim la classe 'show', l'opacitat puja a 1 suaument */
 .loading-overlay.show {
   opacity: 1;
-  pointer-events: auto; /* Bloquegem els clics perquè l'usuari no toqui res més */
+  pointer-events: auto;
 }
 
-/* Text animat d'estil retro */
+/* Quadrícula de píxels decoratius al fons */
+.loading-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      to right,
+      transparent 0px, transparent 39px,
+      rgba(255,203,5,0.04) 39px, rgba(255,203,5,0.04) 40px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px, transparent 39px,
+      rgba(255,203,5,0.04) 39px, rgba(255,203,5,0.04) 40px
+    );
+  pointer-events: none;
+}
+
+/* Caixa de diàleg Pokémon */
+.loading-overlay::after {
+  content: '';
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(380px, 85vw);
+  height: 5px;
+  background: #FFCB05;
+  border-radius: 3px;
+  box-shadow: 0 0 18px rgba(255,203,5,0.7);
+  animation: loading-bar 1.8s ease-in-out infinite;
+}
+
+@keyframes loading-bar {
+  0%   { width: 0; opacity: 1; }
+  80%  { width: min(380px, 85vw); opacity: 1; }
+  100% { width: min(380px, 85vw); opacity: 0; }
+}
+
 .loading-text {
   font-family: 'Press Start 2P', monospace;
-  color: #ffffff;
-  font-size: 20px;
-  animation: blink 1s infinite;
+  color: #FFCB05;
+  font-size: clamp(0.7rem, 2.5vw, 1.1rem);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  text-shadow:
+    0 0 10px rgba(255,203,5,0.9),
+    0 0 24px rgba(255,203,5,0.5),
+    2px 2px 0 #000;
+  animation: poke-blink 1s steps(1) infinite;
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+@keyframes poke-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@media (max-width: 480px) {
+  .loading-text { font-size: 0.65rem; letter-spacing: 2px; }
 }
